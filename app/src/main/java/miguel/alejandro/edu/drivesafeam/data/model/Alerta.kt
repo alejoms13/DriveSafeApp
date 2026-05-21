@@ -1,11 +1,24 @@
 package miguel.alejandro.edu.drivesafeam.data.model
 
+enum class TipoAlerta {
+    NO_FACE,
+    DROWSINESS,
+    DISTRACTION
+}
+
+enum class NivelAlerta {
+    ADVERTENCIA,
+    PELIGRO,
+    CRITICO
+}
+
 data class Alerta(
     val uid: String = "",
-    val tipo: String = "",       // "Distracción", "Somnolencia", "Rostro no encontrado"
-    val nivel: String = "",      // "LEVE", "MEDIA", "CRÍTICA"
-    val timestamp: Long = 0L,    // Milisegundos
-    val latitud: Double = 0.0,
-    val longitud: Double = 0.0,
+    val usuarioId: String = "",
+    val tipo: TipoAlerta = TipoAlerta.DISTRACTION,
+    val nivel: NivelAlerta = NivelAlerta.ADVERTENCIA,
+    val timestamp: Long = System.currentTimeMillis(),
+    val latitud: Double? = null,
+    val longitud: Double? = null,
     val duracion: Int = 0        // Duración en segundos
 )

@@ -66,7 +66,7 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
 
     // ML Kit Face Detection
-    implementation(libs.mlkit.face-detection)
+    implementation(libs.mlkit.face.detection)
 
     // CameraX
     implementation(libs.camerax.core)
@@ -75,22 +75,22 @@ dependencies {
     implementation(libs.camerax.view)
 
     // OSMDroid Maps
-    implementation(libs.osmdroid-android)
+    implementation(libs.osmdroid.android)
 
     // Lottie Animations
-    implementation(libs.lottie-compose)
+    implementation(libs.lottie.compose)
 
     // DataStore Local Storage
-    implementation(libs.datastore-preferences)
+    implementation(libs.datastore.preferences)
 
     // Coil Image Loading
-    implementation(libs.coil-compose)
+    implementation(libs.coil.compose)
 
     // Accompanist Permissions
-    implementation(libs.accompanist-permissions)
+    implementation(libs.accompanist.permissions)
 
     // Play Services Location (GPS)
-    implementation(libs.play-services-location)
+    implementation(libs.play.services.location)
 
     // Testing
     testImplementation(libs.junit)
