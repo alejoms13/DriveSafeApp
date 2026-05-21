@@ -54,6 +54,41 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         
+                        composable(DriveSafeRoute.Onboarding.route) {
+                            val onboardingViewModel: miguel.alejandro.edu.drivesafeam.ui.viewmodel.OnboardingViewModel = viewModel(
+                                factory = object : androidx.lifecycle.ViewModelProvider.Factory {
+                                    override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                                        return miguel.alejandro.edu.drivesafeam.ui.viewmodel.OnboardingViewModel(miguel.alejandro.edu.drivesafeam.data.local.PreferenciasManager(applicationContext)) as T
+                                    }
+                                }
+                            )
+                            miguel.alejandro.edu.drivesafeam.ui.screens.OnboardingScreen(
+                                onNavigateToPermisos = {
+                                    navController.navigate(DriveSafeRoute.Permisos.route) {
+                                        popUpTo(DriveSafeRoute.Onboarding.route) { inclusive = true }
+                                    }
+                                }
+                            )
+                        }
+
+                        composable(DriveSafeRoute.Permisos.route) {
+                            val onboardingViewModel: miguel.alejandro.edu.drivesafeam.ui.viewmodel.OnboardingViewModel = viewModel(
+                                factory = object : androidx.lifecycle.ViewModelProvider.Factory {
+                                    override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                                        return miguel.alejandro.edu.drivesafeam.ui.viewmodel.OnboardingViewModel(miguel.alejandro.edu.drivesafeam.data.local.PreferenciasManager(applicationContext)) as T
+                                    }
+                                }
+                            )
+                            miguel.alejandro.edu.drivesafeam.ui.screens.PermisosScreen(
+                                onPermisosConcedidos = {
+                                    onboardingViewModel.completarOnboarding()
+                                    navController.navigate(DriveSafeRoute.Login.route) {
+                                        popUpTo(DriveSafeRoute.Permisos.route) { inclusive = true }
+                                    }
+                                }
+                            )
+                        }
+                        
                         composable(DriveSafeRoute.Login.route) {
                             LoginScreen(
                                 authViewModel = authViewModel,
