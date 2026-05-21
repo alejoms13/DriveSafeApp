@@ -3,15 +3,87 @@ package miguel.alejandro.edu.drivesafeam
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import miguel.alejandro.edu.drivesafeam.navigation.DriveSafeRoute
+import miguel.alejandro.edu.drivesafeam.ui.screens.LoginScreen
+import miguel.alejandro.edu.drivesafeam.ui.screens.RegisterScreen
+import miguel.alejandro.edu.drivesafeam.ui.screens.SplashScreen
+import miguel.alejandro.edu.drivesafeam.ui.theme.DriveSafeTheme
+import miguel.alejandro.edu.drivesafeam.ui.viewmodel.AuthViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            DarkRegisterScreen(
-                onSignUpClick = {},
-                onLoginClick = {}
-            )
+            DriveSafeTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    val navController = rememberNavController()
+                    val authViewModel: AuthViewModel = viewModel()
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = DriveSafeRoute.Splash.route
+                    ) {
+                        composable(DriveSafeRoute.Splash.route) {
+                            SplashScreen(
+                                onNavigateToLogin = {
+                                    navController.navigate(DriveSafeRoute.Login.route) {
+                                        popUpTo(DriveSafeRoute.Splash.route) { inclusive = true }
+                                    }
+                                },
+                                onNavigateToOnboarding = {
+                                    navController.navigate(DriveSafeRoute.Onboarding.route) {
+                                        popUpTo(DriveSafeRoute.Splash.route) { inclusive = true }
+                                    }
+                                },
+                                onNavigateToMain = {
+                                    navController.navigate(DriveSafeRoute.Monitoreo.route) {
+                                        popUpTo(DriveSafeRoute.Splash.route) { inclusive = true }
+                                    }
+                                }
+                            )
+                        }
+                        
+                        composable(DriveSafeRoute.Login.route) {
+                            LoginScreen(
+                                authViewModel = authViewModel,
+                                onNavigateToRegister = {
+                                    navController.navigate(DriveSafeRoute.Register.route)
+                                },
+                                onLoginSuccess = {
+                                    navController.navigate(DriveSafeRoute.Monitoreo.route) {
+                                        popUpTo(DriveSafeRoute.Login.route) { inclusive = true }
+                                    }
+                                }
+                            )
+                        }
+
+                        composable(DriveSafeRoute.Register.route) {
+                            RegisterScreen(
+                                authViewModel = authViewModel,
+                                onNavigateToLogin = {
+                                    navController.popBackStack()
+                                },
+                                onRegisterSuccess = {
+                                    navController.navigate(DriveSafeRoute.Monitoreo.route) {
+                                        popUpTo(DriveSafeRoute.Register.route) { inclusive = true }
+                                    }
+                                }
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
