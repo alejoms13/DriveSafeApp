@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tema base de la aplicación. -->
+    <style name="Theme.Drivesafeam" parent="Theme.Material3.Dark.NoActionBar">
+        <!-- Forzar color de barra de estado y navegación oscuro -->
+        <item name="android:statusBarColor">#0D0D0D</item>
+        <item name="android:navigationBarColor">#0D0D0D</item>
+        <item name="android:windowBackground">#0D0D0D</item>
+    </style>
+</resources>
