@@ -124,6 +124,29 @@ class MainActivity : ComponentActivity() {
                                 onNavigateToMapa = { navController.navigate(DriveSafeRoute.Mapa.route) }
                             )
                         }
+
+                        composable(DriveSafeRoute.Historial.route) {
+                            miguel.alejandro.edu.drivesafeam.ui.screens.HistorialScreen(
+                                onNavigateBack = { navController.popBackStack() }
+                            )
+                        }
+
+                        composable(DriveSafeRoute.Configuracion.route) {
+                            miguel.alejandro.edu.drivesafeam.ui.screens.ConfiguracionScreen(
+                                onNavigateBack = { navController.popBackStack() },
+                                onNavigateToLogin = {
+                                    navController.navigate(DriveSafeRoute.Login.route) {
+                                        popUpTo(0) { inclusive = true }
+                                    }
+                                }
+                            )
+                        }
+
+                        composable(DriveSafeRoute.Emergencia.route) {
+                            miguel.alejandro.edu.drivesafeam.ui.screens.EmergenciaScreen(
+                                onNavigateBack = { navController.popBackStack() }
+                            )
+                        }
                     }
                 }
             }
