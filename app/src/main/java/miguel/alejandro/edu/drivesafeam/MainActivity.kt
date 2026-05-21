@@ -147,6 +147,12 @@ class MainActivity : ComponentActivity() {
                                 onNavigateBack = { navController.popBackStack() }
                             )
                         }
+
+                        composable(DriveSafeRoute.Mapa.route) {
+                            miguel.alejandro.edu.drivesafeam.ui.screens.MapaScreen(
+                                onNavigateBack = { navController.popBackStack() }
+                            )
+                        }
                     }
                 }
             }
