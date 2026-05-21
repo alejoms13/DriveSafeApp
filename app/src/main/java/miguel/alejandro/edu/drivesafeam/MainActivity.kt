@@ -116,6 +116,14 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
+
+                        composable(DriveSafeRoute.Monitoreo.route) {
+                            miguel.alejandro.edu.drivesafeam.ui.screens.MonitoreoScreen(
+                                onNavigateToHistorial = { navController.navigate(DriveSafeRoute.Historial.route) },
+                                onNavigateToConfiguracion = { navController.navigate(DriveSafeRoute.Configuracion.route) },
+                                onNavigateToMapa = { navController.navigate(DriveSafeRoute.Mapa.route) }
+                            )
+                        }
                     }
                 }
             }
