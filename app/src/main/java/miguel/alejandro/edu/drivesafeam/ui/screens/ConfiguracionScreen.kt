@@ -55,16 +55,16 @@ fun ConfiguracionScreen(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("Vibración", modifier = Modifier.weight(1f))
                 Switch(
-                    checked = configuracion.vibracionActivada,
-                    onCheckedChange = { configViewModel.updateConfiguracion(configuracion.copy(vibracionActivada = it)) }
+                    checked = configuracion.vibracionActiva,
+                    onCheckedChange = { configViewModel.updateConfiguracion(configuracion.copy(vibracionActiva = it)) }
                 )
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("Sonido", modifier = Modifier.weight(1f))
                 Switch(
-                    checked = configuracion.sonidoActivado,
-                    onCheckedChange = { configViewModel.updateConfiguracion(configuracion.copy(sonidoActivado = it)) }
+                    checked = configuracion.sonidoActivo,
+                    onCheckedChange = { configViewModel.updateConfiguracion(configuracion.copy(sonidoActivo = it)) }
                 )
             }
 

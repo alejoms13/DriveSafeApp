@@ -61,7 +61,7 @@ fun RegisterScreen(
         DriveSafeTextField(
             value = correo,
             onValueChange = { correo = it },
-            label = "Correo Electrónico"
+            placeholder = "Correo Electrónico"
         )
         
         Spacer(modifier = Modifier.height(16.dp))
@@ -69,8 +69,8 @@ fun RegisterScreen(
         DriveSafeTextField(
             value = contrasena,
             onValueChange = { contrasena = it },
-            label = "Contraseña",
-            visualTransformation = PasswordVisualTransformation()
+            placeholder = "Contraseña",
+            isPassword = true
         )
         
         Spacer(modifier = Modifier.height(16.dp))
@@ -78,8 +78,8 @@ fun RegisterScreen(
         DriveSafeTextField(
             value = confirmar,
             onValueChange = { confirmar = it },
-            label = "Confirmar Contraseña",
-            visualTransformation = PasswordVisualTransformation()
+            placeholder = "Confirmar Contraseña",
+            isPassword = true
         )
         
         Spacer(modifier = Modifier.height(24.dp))

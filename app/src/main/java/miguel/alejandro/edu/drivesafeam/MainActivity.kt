@@ -15,14 +15,14 @@ import miguel.alejandro.edu.drivesafeam.navigation.DriveSafeRoute
 import miguel.alejandro.edu.drivesafeam.ui.screens.LoginScreen
 import miguel.alejandro.edu.drivesafeam.ui.screens.RegisterScreen
 import miguel.alejandro.edu.drivesafeam.ui.screens.SplashScreen
-import miguel.alejandro.edu.drivesafeam.ui.theme.DriveSafeTheme
+import miguel.alejandro.edu.drivesafeam.ui.theme.DrivesafeamTheme
 import miguel.alejandro.edu.drivesafeam.ui.viewmodel.AuthViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            DriveSafeTheme {
+            DrivesafeamTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

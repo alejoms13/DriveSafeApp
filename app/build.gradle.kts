@@ -60,6 +60,12 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.navigation.compose)
 
+    // Material Components (for XML themes)
+    implementation(libs.material)
+
+    // Guava for CameraX
+    implementation(libs.guava)
+
     // Firebase (BOM makes versions aligned)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
@@ -87,7 +93,7 @@ dependencies {
     implementation(libs.coil.compose)
 
     // Accompanist Permissions
-    implementation(libs.accompanist.permissions)
+    implementation(libs.androidx.accompanist.permissions)
 
     // Play Services Location (GPS)
     implementation(libs.play.services.location)

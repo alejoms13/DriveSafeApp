@@ -16,6 +16,8 @@ googleServices = "4.4.2"
 mlkitFaceDetection = "16.1.7"
 # CameraX
 camerax = "1.4.1"
+# Guava for CameraX
+guava = "33.3.1-android"
 # OSMDroid
 osmdroid = "6.1.20"
 # Lottie
@@ -34,6 +36,8 @@ lifecycleViewmodelCompose = "2.8.7"
 coroutinesAndroid = "1.9.0"
 # Play Services Location
 playServicesLocation = "21.3.0"
+# Material Components (XML Themes)
+material = "1.12.0"
 
 [libraries]
 # Core Android
@@ -52,6 +56,12 @@ androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-te
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation" }
+
+# Guava
+guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
+
+# Material Components (XML)
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 # Material Icons Extended
 androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIconsExtended" }
@@ -90,7 +100,7 @@ datastore-preferences = { group = "androidx.datastore", name = "datastore-prefer
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
 
 # Accompanist Permissions
-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanistPermissions" }
+androidx-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanistPermissions" }
 
 # Coroutines
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutinesAndroid" }
