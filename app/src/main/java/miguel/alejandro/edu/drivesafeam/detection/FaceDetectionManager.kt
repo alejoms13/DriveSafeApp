@@ -1,6 +1,7 @@
 package miguel.alejandro.edu.drivesafeam.detection
 
 import android.media.Image
+import android.util.Log
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.face.Face
 import com.google.mlkit.vision.face.FaceDetection
@@ -16,7 +17,7 @@ class FaceDetectionManager {
         .enableTracking()
         .build()
 
-    private val detector = FaceDetection.getClient(options)
+    private var detector = FaceDetection.getClient(options)
 
     fun detectInImage(imageProxy: androidx.camera.core.ImageProxy, onResult: (List<Face>) -> Unit) {
         @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
@@ -27,14 +28,23 @@ class FaceDetectionManager {
                 .addOnSuccessListener { faces ->
                     onResult(faces)
                 }
-                .addOnFailureListener {
-                    // Manejo de error si es necesario
+                .addOnFailureListener { e ->
+                    Log.e("FaceDetectionManager", "Error en detección: ${e.message}")
                 }
                 .addOnCompleteListener {
                     imageProxy.close()
                 }
         } else {
             imageProxy.close()
+        }
+    }
+
+    fun close() {
+        try {
+            detector.close()
+            Log.d("FaceDetectionManager", "Detector cerrado correctamente")
+        } catch (e: Exception) {
+            Log.e("FaceDetectionManager", "Error al cerrar el detector: ${e.message}")
         }
     }
 }

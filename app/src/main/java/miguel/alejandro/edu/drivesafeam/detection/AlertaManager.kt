@@ -34,12 +34,12 @@ class AlertaManager(private val context: Context) {
                 }
                 NivelAlerta.PELIGRO, NivelAlerta.CRITICO -> {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        val timings = longArrayOf(0, 500, 200, 500, 200, 500)
-                        val amplitudes = intArrayOf(0, 255, 0, 255, 0, 255)
-                        vibrator.vibrate(VibrationEffect.createWaveform(timings, amplitudes, -1))
+                        val timings = longArrayOf(0, 500, 200, 500)
+                        val amplitudes = intArrayOf(0, 255, 0, 255)
+                        vibrator.vibrate(VibrationEffect.createWaveform(timings, amplitudes, 0))
                     } else {
                         @Suppress("DEPRECATION")
-                        vibrator.vibrate(longArrayOf(0, 500, 200, 500, 200, 500), -1)
+                        vibrator.vibrate(longArrayOf(0, 500, 200, 500), 0)
                     }
                 }
             }
@@ -53,15 +53,33 @@ class AlertaManager(private val context: Context) {
     private fun playSonidoAlerta(nivel: NivelAlerta) {
         if (mediaPlayer?.isPlaying == true) return
 
-        val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-            ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-
-        mediaPlayer = MediaPlayer.create(context, uri).apply {
-            isLooping = false
-            start()
-            setOnCompletionListener {
-                it.release()
-                mediaPlayer = null
+        try {
+            val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+                ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                
+            mediaPlayer = MediaPlayer().apply {
+                setDataSource(context, uri)
+                setAudioAttributes(
+                    android.media.AudioAttributes.Builder()
+                        .setUsage(android.media.AudioAttributes.USAGE_ALARM)
+                        .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build()
+                )
+                isLooping = (nivel == NivelAlerta.PELIGRO || nivel == NivelAlerta.CRITICO)
+                prepare()
+                start()
+                setOnCompletionListener {
+                    it.release()
+                    mediaPlayer = null
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // Fallback seguro en caso de error
+            val fallbackUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            mediaPlayer = MediaPlayer.create(context, fallbackUri)?.apply {
+                isLooping = (nivel == NivelAlerta.PELIGRO || nivel == NivelAlerta.CRITICO)
+                start()
             }
         }
     }

@@ -14,6 +14,7 @@ class PreferenciasManager(private val context: Context) {
     companion object {
         val ONBOARDING_COMPLETADO = booleanPreferencesKey("onboarding_completado")
         val ID_USUARIO = stringPreferencesKey("id_usuario")
+        val NOMBRE_USUARIO = stringPreferencesKey("nombre_usuario")
     }
 
     val onboardingCompletado: Flow<Boolean> = context.dataStore.data.map { prefs ->
@@ -26,8 +27,8 @@ class PreferenciasManager(private val context: Context) {
         }
     }
 
-    val idUsuario: Flow<String?> = context.dataStore.data.map { prefs ->
-        prefs[ID_USUARIO]
+    val idUsuario: Flow<String> = context.dataStore.data.map { prefs ->
+        prefs[ID_USUARIO] ?: ""
     }
 
     suspend fun guardarIdUsuario(id: String) {
@@ -36,9 +37,20 @@ class PreferenciasManager(private val context: Context) {
         }
     }
 
+    val nombreUsuario: Flow<String> = context.dataStore.data.map { prefs ->
+        prefs[NOMBRE_USUARIO] ?: ""
+    }
+
+    suspend fun guardarNombreUsuario(nombre: String) {
+        context.dataStore.edit { prefs ->
+            prefs[NOMBRE_USUARIO] = nombre
+        }
+    }
+
     suspend fun limpiarSesion() {
         context.dataStore.edit { prefs ->
             prefs.remove(ID_USUARIO)
+            prefs.remove(NOMBRE_USUARIO)
         }
     }
 }

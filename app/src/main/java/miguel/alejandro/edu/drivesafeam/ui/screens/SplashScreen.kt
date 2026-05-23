@@ -5,28 +5,26 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import miguel.alejandro.edu.drivesafeam.R
 import miguel.alejandro.edu.drivesafeam.data.local.PreferenciasManager
+import miguel.alejandro.edu.drivesafeam.ui.theme.DriveSafeDark
 import miguel.alejandro.edu.drivesafeam.ui.theme.DriveSafeGlow
+import miguel.alejandro.edu.drivesafeam.ui.theme.DriveSafeOrange
+import miguel.alejandro.edu.drivesafeam.ui.theme.TextWhite
 
 @Composable
 fun SplashScreen(
@@ -39,6 +37,7 @@ fun SplashScreen(
     
     val onboardingCompletado by prefManager.onboardingCompletado.collectAsState(initial = null)
     val idUsuario by prefManager.idUsuario.collectAsState(initial = null)
+    val nombreUsuario by prefManager.nombreUsuario.collectAsState(initial = "")
 
     var startAnimation by remember { mutableStateOf(false) }
     
@@ -47,15 +46,14 @@ fun SplashScreen(
         animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing)
     )
     val scaleAnim = animateFloatAsState(
-        targetValue = if (startAnimation) 1f else 0.5f,
+        targetValue = if (startAnimation) 1f else 0.8f,
         animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing)
     )
 
     LaunchedEffect(key1 = onboardingCompletado, key2 = idUsuario) {
         startAnimation = true
-        delay(2000) // Mostrar el logo por 2 segundos
+        delay(2200) // Mostrar el logo por 2.2 segundos para apreciar el glow
         
-        // Evitamos navegar si aún no sabemos los estados (son null inicialmente)
         if (onboardingCompletado != null && idUsuario != null) {
             if (idUsuario?.isNotEmpty() == true) {
                 onNavigateToMain()
@@ -70,20 +68,39 @@ fun SplashScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(DriveSafeDark)
+            .systemBarsPadding(),
         contentAlignment = Alignment.Center
     ) {
-        Box(
+        // Fondo glow animado
+        DriveSafeGlow(color = DriveSafeOrange, animated = true)
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .size(200.dp)
                 .alpha(alphaAnim.value)
                 .scale(scaleAnim.value)
         ) {
-            DriveSafeGlow(color = MaterialTheme.colorScheme.primary)
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground), // Asegurar que este drawable exista
+                painter = painterResource(id = R.drawable.logo),
                 contentDescription = "DriveSafe Logo",
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.size(140.dp)
+            )
+            
+            Spacer(modifier = Modifier.height(32.dp))
+            
+            val greeting = if (!idUsuario.isNullOrEmpty() && nombreUsuario.isNotEmpty()) {
+                "HOLA, ${nombreUsuario.uppercase()}"
+            } else {
+                "DRIVESAFE"
+            }
+            
+            Text(
+                text = greeting,
+                color = TextWhite,
+                style = MaterialTheme.typography.titleLarge,
+                letterSpacing = 4.sp,
+                fontWeight = FontWeight.Black
             )
         }
     }

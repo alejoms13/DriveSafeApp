@@ -13,6 +13,8 @@ class AuthViewModel : ViewModel() {
     private val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
     val authState: StateFlow<AuthState> = _authState
 
+    fun getCurrentUserId(): String? = authRepository.getCurrentUserId()
+
     fun login(correo: String, contrasena: String) {
         if (correo.isBlank() || contrasena.isBlank()) {
             _authState.value = AuthState.Error("Por favor ingresa correo y contraseña")
@@ -55,6 +57,23 @@ class AuthViewModel : ViewModel() {
     fun resetState() {
         _authState.value = AuthState.Idle
     }
+
+    fun resetPassword(correo: String) {
+        if (correo.isBlank()) {
+            _authState.value = AuthState.Error("Por favor ingresa tu correo para restablecer la contraseña")
+            return
+        }
+
+        _authState.value = AuthState.Loading
+        viewModelScope.launch {
+            val result = authRepository.resetPassword(correo)
+            if (result.isSuccess) {
+                _authState.value = AuthState.PasswordResetSent("Enlace de restablecimiento enviado a tu correo")
+            } else {
+                _authState.value = AuthState.Error(result.exceptionOrNull()?.message ?: "Error al restablecer contraseña")
+            }
+        }
+    }
 }
 
 sealed class AuthState {
@@ -62,4 +81,5 @@ sealed class AuthState {
     object Loading : AuthState()
     object Success : AuthState()
     data class Error(val message: String) : AuthState()
+    data class PasswordResetSent(val message: String) : AuthState()
 }

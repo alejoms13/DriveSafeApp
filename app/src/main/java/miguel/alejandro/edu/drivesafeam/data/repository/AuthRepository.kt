@@ -29,4 +29,13 @@ class AuthRepository {
     fun logout() {
         auth.signOut()
     }
+
+    suspend fun resetPassword(correo: String): Result<Unit> {
+        return try {
+            auth.sendPasswordResetEmail(correo).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

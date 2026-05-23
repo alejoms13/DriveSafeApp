@@ -6,21 +6,37 @@ service cloud.firestore {
       allow read, write: if true;
     }
 
-    // Reglas para usuarios
+    // Reglas para usuarios (legacy)
     match /usuarios/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
 
-    // Reglas para configuraciones
+    // Reglas para configuraciones (legacy)
     match /configuraciones/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
     
-    // Reglas para alertas
+    // Reglas para alertas (legacy)
     match /alertas/{alertaId} {
       allow read: if request.auth != null && request.auth.uid == resource.data.usuarioId;
       allow create: if request.auth != null && request.auth.uid == request.resource.data.usuarioId;
       allow update, delete: if request.auth != null && request.auth.uid == resource.data.usuarioId;
+    }
+
+    // NUEVAS REGLAS: Arquitectura centralizada en users
+    match /users/{userId} {
+      // Permite al usuario leer y escribir su propio documento
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      // Permite leer y escribir en su propia subcolección de alertas
+      match /alertas/{alertaId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // Reglas para reportes (puntos en el mapa comunitarios)
+    match /reportes/{reporteId} {
+      allow read, write: if request.auth != null;
     }
   }
 }
